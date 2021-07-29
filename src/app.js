@@ -26,7 +26,12 @@ const typeDefs = gql`
     content: String!
     author: String!
   }
+
+  type Mutation {
+    newNote(content: String!): Note!
+  }
 `;
+
 const resolvers = {
   Query: {
     hello: () => 'Hello world!',
@@ -34,14 +39,27 @@ const resolvers = {
     note: (parent, args) => {
       return notes.find((note) => note.id === args.id);
     }
+  },
+
+  Mutation: {
+    newNote: (parent, args) => {
+      let noteValue = {
+        id: String(notes.length + 1),
+        content: args.content,
+        author: 'Adam Scott'
+      };
+      notes.push(noteValue);
+      return noteValue;
+    }
   }
 };
-
 const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+console.log(__dirname);
+
 app.use(express.static(path.join(__dirname, 'public')));
 //Настраиваем Apollo Server
 const server = new ApolloServer({ typeDefs, resolvers });
