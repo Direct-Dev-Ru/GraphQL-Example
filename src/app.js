@@ -3,8 +3,20 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const { ApolloServer, gql } = require('apollo-server-express');
+const db = require('./data/mongodb/db');
+require('dotenv').config();
 
 const port = process.env.PORT || 8000;
+const DB_HOST = process.env.DB_HOST;
+const DB_USERNAME = process.env.MONGO_INITDB_ROOT_USERNAME;
+const DB_PASSWORD = process.env.MONGO_INITDB_ROOT_PASSWORD;
+
+console.log(
+  `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}?authSource=admin`
+);
+db.connect(
+  `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}?authSource=admin`
+);
 
 const indexRouter = require('./routes/index');
 
