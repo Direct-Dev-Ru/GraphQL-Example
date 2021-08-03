@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const { ApolloServer, gql } = require('apollo-server-express');
 const db = require('./data/mongodb/db');
+const models = require('./data/mongodb/models');
+
 require('dotenv').config();
 
 const port = process.env.PORT || 8000;
@@ -47,24 +49,25 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     hello: () => 'Hello world!',
-    notes: () => notes,
-    note: (parent, args) => {
-      return notes.find((note) => note.id === args.id);
+    // notes: () => notes,
+    notes: async () => {
+      return await models.Note.find();
+    },
+    note: async (parent, args) => {
+      return await models.Note.findById(args.id);
     }
   },
 
   Mutation: {
-    newNote: (parent, args) => {
-      let noteValue = {
-        id: String(notes.length + 1),
+    newNote: async (parent, args) => {
+      return await models.Note.create({
         content: args.content,
         author: 'Adam Scott'
-      };
-      notes.push(noteValue);
-      return noteValue;
+      });
     }
   }
 };
+
 const app = express();
 app.use(logger('dev'));
 app.use(express.json());
