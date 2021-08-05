@@ -14,9 +14,28 @@ const deleteNote = async (parent, { id }, { models }) => {
   }
 };
 
+const updateNote = async (parent, { content, id }, { models }) => {
+  try {
+    return await models.Note.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          content
+        }
+      },
+      {
+        new: true
+      }
+    );
+  } catch (err) {
+    return err;
+  }
+};
+
 const Mutation = {
   newNote,
-  deleteNote
+  deleteNote,
+  updateNote
 };
 
 module.exports = Mutation;
