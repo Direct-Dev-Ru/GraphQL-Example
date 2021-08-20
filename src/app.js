@@ -8,7 +8,7 @@ const models = require('./data/mongodb/models');
 const typeDefs = require('./data/graphql/schema');
 const resolvers = require('./data/graphql/resolvers');
 require('dotenv').config();
-
+// sss444
 const port = process.env.PORT || 8000;
 const DB_HOST = process.env.DB_HOST;
 const DB_USERNAME = process.env.MONGO_INITDB_ROOT_USERNAME;
@@ -40,7 +40,7 @@ const server = new ApolloServer({
   }
 });
 
-//Применяем промежуточное ПО Apollo GraphQL и указываем путь к /api
+// !Применяем промежуточное ПО Apollo GraphQL и указываем путь к /api
 server.applyMiddleware({ app, path: '/api' });
 
 app.use('/', indexRouter);

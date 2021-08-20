@@ -1,4 +1,4 @@
-const bcrypt = require('brypt');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {
   AuthenticationError,
@@ -63,10 +63,14 @@ const signUp = async (parent, args, { models }) => {
   }
 };
 
+const signIn = async (parent, args, { models }) => {};
+
 const Mutation = {
   newNote,
   deleteNote,
-  updateNote
+  updateNote,
+  signUp,
+  signIn
 };
 
 module.exports = Mutation;
