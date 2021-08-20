@@ -7,7 +7,6 @@ const db = require('./data/mongodb/db');
 const models = require('./data/mongodb/models');
 const typeDefs = require('./data/graphql/schema');
 const resolvers = require('./data/graphql/resolvers');
-
 require('dotenv').config();
 
 const port = process.env.PORT || 8000;

@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema(
     avatar: { type: String }
   },
   {
-    // Присваиваем поля createdAt и updatedAt с типом данных
     timestamps: true
   }
 );

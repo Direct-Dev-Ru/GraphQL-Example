@@ -1,3 +1,13 @@
+const bcrypt = require('brypt');
+const jwt = require('jsonwebtoken');
+const {
+  AuthenticationError,
+  ForbiddenError
+} = require('apollo-server-express');
+require('dotenv').config();
+
+const gravatar = require('../../../utils/gravatar');
+
 const newNote = async (parent, args, { models }) => {
   return await models.Note.create({
     content: args.content,
@@ -29,6 +39,27 @@ const updateNote = async (parent, { content, id }, { models }) => {
     );
   } catch (err) {
     return err;
+  }
+};
+
+const signUp = async (parent, args, { models }) => {
+  const email = args.email.trim().toLowerCase();
+  const username = args.username.trim();
+  const hashed = await bcrypt.hash(args.password);
+
+  const avatar = gravatar(email);
+
+  try {
+    const user = await models.User.create({
+      username,
+      email,
+      avatar,
+      password: hashed
+    });
+    return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+  } catch (err) {
+    console.log(err);
+    throw new Error('Error creating account');
   }
 };
 
